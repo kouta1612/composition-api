@@ -1,13 +1,15 @@
 <template>
   <div>
-    {{ todos }}
     <ul>
-      <li v-for="todo in todos" :key="todo.id">{{ todo.title }}</li>
+      <li v-for="todo in todos" :key="todo.id">
+        <p>ID: {{ todo.userId }}</p>
+        <p>TITLE: {{ todo.title }}</p>
+      </li>
     </ul>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, onMounted, ref } from '@vue/composition-api'
 import axios from 'axios'
 
@@ -15,7 +17,8 @@ export default defineComponent({
   setup() {
     const todos = ref([])
     const getTodos = async () => {
-      todos.value = await axios.get('https://jsonplaceholder.typicode.com/todos')
+      const response = await axios.get('https://jsonplaceholder.typicode.com/todos')
+      todos.value = response.data
     }
     onMounted(async () => {
       getTodos()
