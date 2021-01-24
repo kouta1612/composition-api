@@ -1,23 +1,27 @@
 <template>
   <div>
-    <p>{{ user.firstName }}</p>
-    <p>{{ fullName }}</p>
+    {{ todos }}
+    <ul>
+      <li v-for="todo in todos" :key="todo.id">{{ todo.title }}</li>
+    </ul>
   </div>
 </template>
 
 <script>
-import { computed, defineComponent, reactive } from '@vue/composition-api'
+import { defineComponent, onMounted, ref } from '@vue/composition-api'
 
 export default defineComponent({
-  setup() {
-    const user = reactive({
-      firstName: 'hagiwara',
-      lastName: 'kota',
+  setup(props, { root }) {
+    const todos = ref([])
+    const getTodos = async () => {
+      todos.value = await root.$axios.$get('https://jsonplaceholder.typicode.com/todos')
+    }
+    onMounted(() => {
+      getTodos()
     })
-    const fullName = computed(() => `${user.firstName} ${user.lastName}`)
     return {
-      user,
-      fullName
+      todos,
+      getTodos
     }
   },
 })
