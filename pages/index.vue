@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, onMounted, ref } from '@vue/composition-api'
 import axios from 'axios'
 
@@ -17,6 +17,9 @@ export default defineComponent({
   setup() {
     const todos = ref([])
     const getTodos = async () => {
+      // fetch('https://jsonplaceholder.typicode.com/todos')
+      //   .then(response => response.json())
+      //   .then(data => todos.value = data)
       const response = await axios.get('https://jsonplaceholder.typicode.com/todos')
       todos.value = response.data
     }
